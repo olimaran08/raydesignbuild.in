@@ -3,230 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAY DESIGN & BUILD | Coming Soon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>RAY DESIGN & BUILD | ARCHDUO</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-gold: #c5a059;
-            --bg-dark: #0a0a0c;
-            --text-light: #f5f5f7;
-            --text-muted: #888890;
+            --gold: #c5a059;
+            --dark: #0a0a0a;
+            --grid-opacity: 0.15;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* The Main Architectural Grid */
+        .grid-container {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(var(--gold) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: var(--grid-opacity);
+            z-index: 1;
+        }
+
+        /* Moving Laser Line (Scanner) */
+        .scanner-line {
+            position: fixed;
             width: 100%;
-            height: 100%;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevents scrollbars from the moving grid */
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            box-shadow: 0 0 15px var(--gold);
+            z-index: 2;
+            top: 0;
+            animation: scan 8s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        /* Interactive Reveal Background (The Building) */
+        .building-reveal {
+            position: fixed;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            z-index: 0;
+            filter: grayscale(100%) brightness(30%);
+            clip-path: circle(150px at -20% -20%);
+            transition: clip-path 0.1s ease-out;
+        }
+
+        /* Typography & Layout */
+        main {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            pointer-events: none; /* Let mouse pass through to background */
+        }
+
+        .top-label {
+            font-size: 10px;
+            letter-spacing: 8px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .main-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 300;
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            font-weight: 100;
+            color: rgba(255,255,255,0.6);
+            margin-top: 20px;
+        }
+
+        .coming-soon {
+            margin-top: 60px;
+            font-size: 12px;
+            letter-spacing: 4px;
+            border-top: 1px solid var(--gold);
+            padding-top: 20px;
+            color: var(--gold);
+        }
+
+        /* CUSTOM CURSOR & COORDINATES */
+        #cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Interactive Architectural Blueprint Background */
-        .bg-grid {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150vw;
-            height: 150vh;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: translate(-50%, -50%);
-            z-index: 1;
+        #cursor::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .coords {
+            position: fixed;
+            font-size: 9px;
+            color: var(--gold);
+            font-family: monospace;
             pointer-events: none;
-            transition: transform 0.2s ease-out;
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-            width: 90%;
-        }
-
-        /* Branding */
-        .brand-name {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            margin: 0;
-            color: var(--text-light);
-            text-transform: uppercase;
-        }
-
-        .brand-sub {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.4em;
-            color: var(--primary-gold);
-            text-transform: uppercase;
-            margin-top: 10px;
-            margin-bottom: 3rem;
-        }
-
-        /* Main Headline */
-        h1 {
-            font-weight: 300;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            line-height: 1.4;
-            margin-bottom: 2rem;
-        }
-
-        /* Typing Effect Area */
-        .typing-container {
-            height: 40px;
-            margin-bottom: 3rem;
-        }
-
-        .typed-text {
-            color: var(--primary-gold);
-            font-weight: 600;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            background-color: var(--primary-gold);
-            margin-left: 2px;
-            animation: blink 1s infinite;
-        }
-
-        /* Notify Me Section */
-        .notify-box {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        input[type="email"] {
-            padding: 12px 20px;
-            width: 280px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="email"]:focus {
-            border-color: var(--primary-gold);
-        }
-
-        button {
-            padding: 12px 30px;
-            background: var(--primary-gold);
-            color: var(--bg-dark);
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            text-transform: uppercase;
+            z-index: 100;
+            margin-left: 50px;
+            margin-top: 30px;
             letter-spacing: 1px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
         }
 
-        button:hover {
-            background: #dabc7a;
-            transform: translateY(-2px);
+        /* Button - Needs pointer events back */
+        .btn-wrap {
+            pointer-events: all;
+            margin-top: 40px;
         }
 
-        /* Animations */
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
+        .contact-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 3px;
+            padding: 15px 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.4s;
+            text-transform: uppercase;
         }
 
-        .fade-in {
-            animation: fadeIn 2s ease-in forwards;
+        .contact-btn:hover {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: black;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Technical Border Labels */
+        .border-tag {
+            position: fixed;
+            font-size: 9px;
+            color: var(--gold);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 5;
         }
+        .tag-tl { top: 30px; left: 30px; }
+        .tag-tr { top: 30px; right: 30px; }
+        .tag-bl { bottom: 30px; left: 30px; }
+
     </style>
 </head>
 <body>
 
-    <div class="bg-grid" id="grid"></div>
+    <div id="cursor"></div>
+    <div id="coords" class="coords">X: 000 Y: 000</div>
 
-    <div class="container fade-in">
-        <h2 class="brand-name">Ray Design & Build</h2>
-        <div class="brand-sub">by Archduo</div>
+    <div class="grid-container"></div>
+    <div class="scanner-line"></div>
+    <div class="building-reveal" id="reveal"></div>
+
+    <div class="border-tag tag-tl">Scale 1:50</div>
+    <div class="border-tag tag-tr">Studio v.01</div>
+    <div class="border-tag tag-bl">Ray Design & Build ©2024</div>
+
+    <main>
+        <div class="top-label">Architecture • Interior • Execution</div>
+        <h1 class="main-title">
+            RAY <br> DESIGN & BUILD
+        </h1>
+        <div class="sub-title">by ARCHDUO</div>
         
-        <h1>Forging the future of spaces.<br>We specialize in</h1>
-        
-        <div class="typing-container">
-            <h1><span class="typed-text"></span><span class="cursor">&nbsp;</span></h1>
-        </div>
+        <div class="coming-soon">NEW DIGITAL EXPERIENCE COMING SOON</div>
 
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Our new digital experience is currently under construction. Leave your email to be notified upon launch.
-        </p>
-
-        <div class="notify-box">
-            <input type="email" placeholder="Enter your email address">
-            <button onclick="alert('Thank you for your interest! We will keep you updated.')">Notify Me</button>
+        <div class="btn-wrap">
+            <a href="mailto:hello@yourdomain.com" class="contact-btn">Project Inquiry</a>
         </div>
-    </div>
+    </main>
 
     <script>
-        // --- Interactive Blueprint Grid (Mouse move effect) ---
-        document.addEventListener('mousemove', function(e) {
-            const grid = document.getElementById('grid');
-            const x = (e.clientX / window.innerWidth - 0.5) * 40; 
-            const y = (e.clientY / window.innerHeight - 0.5) * 40;
-            // Moves the grid slightly in the opposite direction of the mouse
-            grid.style.transform = `translate(calc(-50% - ${x}px), calc(-50% - ${y}px))`;
+        const reveal = document.getElementById('reveal');
+        const cursor = document.getElementById('cursor');
+        const coords = document.getElementById('coords');
+
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // 1. Reveal building on mouse move
+            reveal.style.clipPath = `circle(180px at ${x}px ${y}px)`;
+            
+            // 2. Move custom cursor
+            cursor.style.left = x + 'px';
+            cursor.style.top = y + 'px';
+            
+            // 3. Update coordinates text
+            coords.style.left = x + 'px';
+            coords.style.top = y + 'px';
+            coords.innerText = `X: ${x.toString().padStart(3, '0')} Y: ${y.toString().padStart(3, '0')}`;
         });
 
-        // --- Typing Effect for Services ---
-        const textArray = ["Architecture.", "Interior Design.", "Impeccable Execution."];
-        const typingDelay = 100;
-        const erasingDelay = 50;
-        const newTextDelay = 2000;
-        let textArrayIndex = 0;
-        let charIndex = 0;
-
-        const typedTextSpan = document.querySelector(".typed-text");
-
-        function type() {
-            if (charIndex < textArray[textArrayIndex].length) {
-                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(type, typingDelay);
-            } else {
-                setTimeout(erase, newTextDelay);
-            }
-        }
-
-        function erase() {
-            if (charIndex > 0) {
-                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(erase, erasingDelay);
-            } else {
-                textArrayIndex++;
-                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-                setTimeout(type, typingDelay + 1100);
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() { 
-            setTimeout(type, 1000);
+        // Click effect
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        });
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
         });
     </script>
 </body>
